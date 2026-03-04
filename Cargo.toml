@@ -1,0 +1,25 @@
+[package]
+name = "mdwatch"
+version = "0.1.0"
+edition = "2024"
+description = "Markdown watcher with content-aware trigger rules for Hugo build pipelines"
+license = "MIT"
+authors = ["mdwatch contributors"]
+
+[dependencies]
+notify = "6.1.1"
+walkdir = "2.5.0"
+xxhash-rust = { version = "0.8.15", features = ["xxh3"] }
+
+[package.metadata.deb]
+maintainer = "mdwatch contributors"
+depends = "$auto"
+section = "utils"
+priority = "optional"
+assets = [
+  ["target/release/mdwatch", "usr/bin/mdwatch", "755"],
+  ["distribution/linux/watch-docker-compose.sh", "usr/lib/mdwatch/watch-docker-compose.sh", "755"],
+  ["distribution/linux/mdwatch.service", "lib/systemd/system/mdwatch.service", "644"],
+  ["distribution/linux/mdwatch.env", "etc/default/mdwatch", "644"],
+]
+conf-files = ["/etc/default/mdwatch"]

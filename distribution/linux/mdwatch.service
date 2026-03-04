@@ -1,0 +1,16 @@
+[Unit]
+Description=mdwatch markdown watcher
+Wants=network-online.target docker.service
+After=network-online.target docker.service
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/default/mdwatch
+ExecStart=/usr/lib/mdwatch/watch-docker-compose.sh
+Restart=always
+RestartSec=2
+KillSignal=SIGINT
+TimeoutStopSec=20
+
+[Install]
+WantedBy=multi-user.target
