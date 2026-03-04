@@ -42,7 +42,7 @@ TARGET_BIN="target/${TARGET}/release/markwatch"
 mkdir -p target/release
 cp "${TARGET_BIN}" target/release/markwatch
 
-OUTPUT_PATH="${OUT_DIR}/markwatch_${VERSION}_${DEB_ARCH}.deb"
+OUTPUT_PATH="${OUT_DIR}/markwatch_${DEB_ARCH}.deb"
 cargo deb \
   --target "${TARGET}" \
   --no-build \

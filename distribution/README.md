@@ -4,6 +4,8 @@ This folder contains packaging and platform helper scripts.
 
 Release workflow builds both `amd64` and `arm64` artifacts for Linux and Windows.
 
+Release artifact filenames are stable and do not include version numbers (to simplify pulling `latest` assets from scripts).
+
 ## Layout
 
 - `linux/`:

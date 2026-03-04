@@ -52,12 +52,7 @@ jobs:
         run: cargo build --release --locked --target "${{ matrix.target }}"
 
       - name: Build linux tar.gz
-        run: |
-          VERSION=""
-          if [[ "${GITHUB_REF_TYPE:-}" == "tag" ]]; then
-            VERSION="${GITHUB_REF_NAME#v}"
-          fi
-          bash distribution/linux/package-tar.sh "${VERSION}" "${{ matrix.target }}" "dist"
+        run: bash distribution/linux/package-tar.sh "" "${{ matrix.target }}" "dist"
 
       - name: Build linux deb
         run: |
@@ -104,12 +99,7 @@ jobs:
 
       - name: Build windows zip
         shell: pwsh
-        run: |
-          $version = ""
-          if ("${{ github.ref_type }}" -eq "tag") {
-            $version = "${{ github.ref_name }}".TrimStart("v")
-          }
-          ./distribution/windows/package-zip.ps1 -Version $version -Target "${{ matrix.target }}" -OutDir "dist"
+        run: ./distribution/windows/package-zip.ps1 -Target "${{ matrix.target }}" -OutDir "dist"
 
       - name: Upload windows artifacts
         uses: actions/upload-artifact@v4

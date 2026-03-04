@@ -4,18 +4,10 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
-VERSION="${1:-}"
+LEGACY_VERSION="${1:-}"
 TARGET="${2:-x86_64-unknown-linux-gnu}"
 OUT_DIR="${3:-${PROJECT_DIR}/dist}"
-
-if [[ -z "${VERSION}" ]]; then
-  VERSION="$(sed -n 's/^version = "\(.*\)"/\1/p' "${PROJECT_DIR}/Cargo.toml" | head -n1)"
-fi
-VERSION="${VERSION#v}"
-[[ -n "${VERSION}" ]] || {
-  echo "ERROR: failed to resolve package version" >&2
-  exit 1
-}
+# Kept for backward compatibility with older callers.
 
 BIN_PATH="${PROJECT_DIR}/target/${TARGET}/release/markwatch"
 if [[ ! -x "${BIN_PATH}" ]]; then
@@ -26,8 +18,8 @@ fi
   exit 1
 }
 
-STAGE_DIR="${OUT_DIR}/markwatch-${VERSION}-${TARGET}"
-ARCHIVE="${OUT_DIR}/markwatch-${VERSION}-${TARGET}.tar.gz"
+STAGE_DIR="${OUT_DIR}/markwatch-${TARGET}"
+ARCHIVE="${OUT_DIR}/markwatch-${TARGET}.tar.gz"
 
 rm -rf "${STAGE_DIR}"
 mkdir -p "${STAGE_DIR}/bin" "${STAGE_DIR}/distribution/linux"

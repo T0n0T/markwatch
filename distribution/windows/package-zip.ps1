@@ -10,14 +10,9 @@ $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $projectDir = Resolve-Path (Join-Path $scriptDir "..\..")
 
 if ([string]::IsNullOrWhiteSpace($Version)) {
-  $cargoToml = Join-Path $projectDir "Cargo.toml"
-  $line = Get-Content -LiteralPath $cargoToml | Where-Object { $_ -match '^version = "' } | Select-Object -First 1
-  if (-not $line) {
-    throw "Failed to resolve version from Cargo.toml"
-  }
-  $Version = ($line -replace '^version = "(.*)"$', '$1')
+  # Keep -Version for backward compatibility, but release asset naming is versionless.
+  $Version = ""
 }
-$Version = $Version.TrimStart("v")
 
 $binaryPath = Join-Path $projectDir ("target\" + $Target + "\release\markwatch.exe")
 if (-not (Test-Path -LiteralPath $binaryPath -PathType Leaf)) {
@@ -30,7 +25,7 @@ if (-not (Test-Path -LiteralPath $binaryPath -PathType Leaf)) {
 $outDirAbs = Join-Path $projectDir $OutDir
 New-Item -ItemType Directory -Force -Path $outDirAbs | Out-Null
 
-$stageName = "markwatch-$Version-$Target"
+$stageName = "markwatch-$Target"
 $stageDir = Join-Path $outDirAbs $stageName
 $zipPath = Join-Path $outDirAbs ("$stageName.zip")
 

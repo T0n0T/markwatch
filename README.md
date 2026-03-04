@@ -156,6 +156,7 @@ Release behavior:
 
 - `workflow_dispatch`: build artifacts only
 - `push tag v*`: build artifacts + publish GitHub Release attachments
+- Release asset filenames are stable and do not include the app version
 
 ## CLI options
 
