@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-MDWATCH_BIN="${MDWATCH_BIN:-/usr/bin/mdwatch}"
+MARKWATCH_BIN="${MARKWATCH_BIN:-/usr/bin/markwatch}"
 COMPOSE_DIR="${COMPOSE_DIR:-}"
 ENV_FILE="${ENV_FILE:-}"
 MARKDOWN_DIR="${MARKDOWN_DIR:-}"
@@ -16,8 +16,8 @@ die() {
   exit 1
 }
 
-[[ -x "${MDWATCH_BIN}" ]] || die "mdwatch binary not executable: ${MDWATCH_BIN}"
-[[ -n "${COMPOSE_DIR}" ]] || die "COMPOSE_DIR is required in /etc/default/mdwatch"
+[[ -x "${MARKWATCH_BIN}" ]] || die "markwatch binary not executable: ${MARKWATCH_BIN}"
+[[ -n "${COMPOSE_DIR}" ]] || die "COMPOSE_DIR is required in /etc/default/markwatch"
 [[ -d "${COMPOSE_DIR}" ]] || die "COMPOSE_DIR not found: ${COMPOSE_DIR}"
 
 if [[ -z "${ENV_FILE}" ]]; then
@@ -40,7 +40,7 @@ if [[ -z "${BUILD_CMD}" ]]; then
   BUILD_CMD="docker compose --env-file \"${ENV_FILE}\" run --rm --no-deps hugo-builder"
 fi
 
-exec "${MDWATCH_BIN}" \
+exec "${MARKWATCH_BIN}" \
   --root "${MARKDOWN_DIR}" \
   --workdir "${COMPOSE_DIR}" \
   --cmd "${BUILD_CMD}" \

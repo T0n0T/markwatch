@@ -17,25 +17,25 @@ VERSION="${VERSION#v}"
   exit 1
 }
 
-BIN_PATH="${PROJECT_DIR}/target/${TARGET}/release/mdwatch"
+BIN_PATH="${PROJECT_DIR}/target/${TARGET}/release/markwatch"
 if [[ ! -x "${BIN_PATH}" ]]; then
-  BIN_PATH="${PROJECT_DIR}/target/release/mdwatch"
+  BIN_PATH="${PROJECT_DIR}/target/release/markwatch"
 fi
 [[ -x "${BIN_PATH}" ]] || {
   echo "ERROR: release binary not found for target ${TARGET}: ${BIN_PATH}" >&2
   exit 1
 }
 
-STAGE_DIR="${OUT_DIR}/mdwatch-${VERSION}-${TARGET}"
-ARCHIVE="${OUT_DIR}/mdwatch-${VERSION}-${TARGET}.tar.gz"
+STAGE_DIR="${OUT_DIR}/markwatch-${VERSION}-${TARGET}"
+ARCHIVE="${OUT_DIR}/markwatch-${VERSION}-${TARGET}.tar.gz"
 
 rm -rf "${STAGE_DIR}"
 mkdir -p "${STAGE_DIR}/bin" "${STAGE_DIR}/distribution/linux"
 
-install -m 755 "${BIN_PATH}" "${STAGE_DIR}/bin/mdwatch"
-install -m 755 "${PROJECT_DIR}/distribution/linux/watch-docker-compose.sh" "${STAGE_DIR}/distribution/linux/watch-docker-compose.sh"
-install -m 644 "${PROJECT_DIR}/distribution/linux/mdwatch.service" "${STAGE_DIR}/distribution/linux/mdwatch.service"
-install -m 644 "${PROJECT_DIR}/distribution/linux/mdwatch.env" "${STAGE_DIR}/distribution/linux/mdwatch.env"
+install -m 755 "${BIN_PATH}" "${STAGE_DIR}/bin/markwatch"
+install -m 755 "${PROJECT_DIR}/distribution/linux/watch-markcompose.sh" "${STAGE_DIR}/distribution/linux/watch-markcompose.sh"
+install -m 644 "${PROJECT_DIR}/distribution/linux/markwatch.service" "${STAGE_DIR}/distribution/linux/markwatch.service"
+install -m 644 "${PROJECT_DIR}/distribution/linux/markwatch.env" "${STAGE_DIR}/distribution/linux/markwatch.env"
 install -m 644 "${PROJECT_DIR}/README.md" "${STAGE_DIR}/README.md"
 
 mkdir -p "${OUT_DIR}"

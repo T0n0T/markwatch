@@ -22,7 +22,7 @@ if ([string]::IsNullOrWhiteSpace($EnvFile)) {
 }
 
 if ([string]::IsNullOrWhiteSpace($BinaryPath)) {
-  $BinaryPath = Join-Path $PSScriptRoot "mdwatch.exe"
+  $BinaryPath = Join-Path $PSScriptRoot "markwatch.exe"
 }
 
 if (-not (Test-Path -LiteralPath $ComposeDir -PathType Container)) {

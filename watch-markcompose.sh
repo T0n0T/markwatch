@@ -12,11 +12,11 @@ LOG_LEVEL="${5:-${LOG_LEVEL:-info}}"
 usage() {
   cat <<'EOF'
 Usage:
-  watch-docker-compose.sh [compose_dir] [env_file] [debounce_ms] [reconcile_sec] [log_level]
+  watch-markcompose.sh [compose_dir] [env_file] [debounce_ms] [reconcile_sec] [log_level]
 
 Examples:
-  ./watch-docker-compose.sh /srv/blog/docker-compose /srv/blog/docker-compose/.env.runtime 1000 600
-  COMPOSE_DIR=/srv/blog/docker-compose ENV_FILE=/srv/blog/docker-compose/.env.runtime DEBOUNCE_MS=1000 RECONCILE_SEC=600 ./watch-docker-compose.sh
+  ./watch-markcompose.sh /srv/blog/markcompose /srv/blog/markcompose/.env.runtime 1000 600
+  COMPOSE_DIR=/srv/blog/markcompose ENV_FILE=/srv/blog/markcompose/.env.runtime DEBOUNCE_MS=1000 RECONCILE_SEC=600 ./watch-markcompose.sh
 EOF
 }
 
@@ -53,17 +53,17 @@ MARKDOWN_DIR="$(awk -F= '/^MARKDOWN_DIR=/{print substr($0, index($0,$2)); exit}'
 [[ -n "${MARKDOWN_DIR}" ]] || die "MARKDOWN_DIR not found in ${ENV_FILE}"
 [[ -d "${MARKDOWN_DIR}" ]] || die "MARKDOWN_DIR does not exist: ${MARKDOWN_DIR}"
 
-if [[ -x "${SCRIPT_DIR}/target/release/mdwatch" ]]; then
-  BIN="${SCRIPT_DIR}/target/release/mdwatch"
-elif [[ -x "${SCRIPT_DIR}/target/debug/mdwatch" ]]; then
-  BIN="${SCRIPT_DIR}/target/debug/mdwatch"
+if [[ -x "${SCRIPT_DIR}/target/release/markwatch" ]]; then
+  BIN="${SCRIPT_DIR}/target/release/markwatch"
+elif [[ -x "${SCRIPT_DIR}/target/debug/markwatch" ]]; then
+  BIN="${SCRIPT_DIR}/target/debug/markwatch"
 else
   echo "Binary not found, building release binary..."
   (cd "${SCRIPT_DIR}" && cargo build --release)
-  BIN="${SCRIPT_DIR}/target/release/mdwatch"
+  BIN="${SCRIPT_DIR}/target/release/markwatch"
 fi
 
-echo "Starting mdwatch:"
+echo "Starting markwatch:"
 echo "  binary:      ${BIN}"
 echo "  root:        ${MARKDOWN_DIR}"
 echo "  workdir:     ${COMPOSE_DIR}"

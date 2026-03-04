@@ -1,4 +1,4 @@
-# mdwatch
+# markwatch
 
 Standalone binary watcher for Markdown directories.
 
@@ -12,22 +12,22 @@ It is built for Hugo build triggering with these rules:
 ## Build (local)
 
 ```bash
-cd mdwatch
+cd markwatch
 cargo build --release
 ```
 
 Binary output:
 
 ```bash
-./target/release/mdwatch
+./target/release/markwatch
 ```
 
 ## Generic usage
 
 ```bash
-./target/release/mdwatch \
+./target/release/markwatch \
   --root /data/blog/markdown \
-  --workdir /path/to/docker-compose \
+  --workdir /path/to/markcompose \
   --cmd "./build.sh .env.runtime" \
   --shell sh \
   --ext md,markdown \
@@ -43,89 +43,91 @@ On Windows, use `--shell powershell` or `--shell cmd`.
 1. Start compose stack first:
 
 ```bash
-cd docker-compose
+cd markcompose
 ./start.sh <markdown_dir> <editor_static_dir> [attachments_dir] [host_port]
 ```
 
 2. Linux host run watcher in another terminal:
 
 ```bash
-cd mdwatch
-./watch-docker-compose.sh /path/to/docker-compose /path/to/docker-compose/.env.runtime 800 600
+cd markwatch
+./watch-markcompose.sh /path/to/markcompose /path/to/markcompose/.env.runtime 800 600
 ```
 
 Or use environment variables:
 
 ```bash
-COMPOSE_DIR=/path/to/docker-compose \
-ENV_FILE=/path/to/docker-compose/.env.runtime \
+COMPOSE_DIR=/path/to/markcompose \
+ENV_FILE=/path/to/markcompose/.env.runtime \
 DEBOUNCE_MS=800 \
 RECONCILE_SEC=600 \
-./watch-docker-compose.sh
+./watch-markcompose.sh
 ```
 
 3. Windows host run watcher:
 
 ```powershell
-cd mdwatch
-.\distribution\windows\watch-docker-compose.ps1 `
-  -ComposeDir "D:\blog\docker-compose" `
-  -EnvFile "D:\blog\docker-compose\.env.runtime" `
+cd markwatch
+.\distribution\windows\watch-markcompose.ps1 `
+  -ComposeDir "D:\blog\markcompose" `
+  -EnvFile "D:\blog\markcompose\.env.runtime" `
   -DebounceMs 800 `
   -ReconcileSec 600 `
   -Shell powershell `
-  -BinaryPath ".\target\release\mdwatch.exe"
+  -BinaryPath ".\target\release\markwatch.exe"
 ```
 
 ## systemd service (local repo mode)
 
 Files:
 
-- `mdwatch.service`: system service unit
-- `mdwatch.service.env.example`: example overrides for `/etc/default/mdwatch`
-- `install-systemd.sh`: installer helper
+- `distribution/linux/markwatch.service`: system service unit
+- `distribution/linux/markwatch.env`: example defaults for `/etc/default/markwatch`
+- `distribution/linux/watch-markcompose.sh`: runtime launcher used by the service
 
 Install and start:
 
 ```bash
-cd mdwatch
+cd markwatch
 cargo build --release
-./install-systemd.sh
+sudo install -m 644 distribution/linux/markwatch.service /etc/systemd/system/markwatch.service
+sudo install -m 755 distribution/linux/watch-markcompose.sh /usr/lib/markwatch/watch-markcompose.sh
+sudo install -m 644 distribution/linux/markwatch.env /etc/default/markwatch
+sudo systemctl daemon-reload
+sudo systemctl enable --now markwatch
 ```
-
-The installer creates `/etc/default/mdwatch` (if missing) with detected paths.
-You can tune path/frequency there at any time:
+You can tune path/frequency in `/etc/default/markwatch` at any time.
 
 Useful commands:
 
 ```bash
-sudo systemctl status mdwatch --no-pager
-sudo systemctl restart mdwatch
-sudo systemctl stop mdwatch
-sudo journalctl -u mdwatch -f
+sudo systemctl status markwatch --no-pager
+sudo systemctl restart markwatch
+sudo systemctl stop markwatch
+sudo journalctl -u markwatch -f
 ```
 
 Customize defaults:
 
 ```bash
-sudo cp mdwatch.service.env.example /etc/default/mdwatch
-sudoedit /etc/default/mdwatch
+sudo cp distribution/linux/markwatch.env /etc/default/markwatch
+sudoedit /etc/default/markwatch
 sudo systemctl daemon-reload
-sudo systemctl restart mdwatch
+sudo systemctl restart markwatch
 ```
 
-Required keys in `/etc/default/mdwatch`:
+Required keys in `/etc/default/markwatch`:
 
 ```text
-WATCH_SCRIPT=/absolute/path/to/mdwatch/watch-docker-compose.sh
-COMPOSE_DIR=/absolute/path/to/docker-compose
-ENV_FILE=/absolute/path/to/docker-compose/.env.runtime
+WATCH_SCRIPT=/absolute/path/to/markwatch/watch-markcompose.sh
+COMPOSE_DIR=/absolute/path/to/markcompose
+ENV_FILE=/absolute/path/to/markcompose/.env.runtime
 DEBOUNCE_MS=800
 RECONCILE_SEC=600
 LOG_LEVEL=info
 ```
 
-`mdwatch.service` no longer hardcodes compose path or monitoring frequency.
+`markwatch.service` no longer hardcodes compose path or monitoring frequency.
 
 ## Distribution folder
 

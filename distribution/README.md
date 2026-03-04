@@ -9,9 +9,9 @@ Release workflow builds both `amd64` and `arm64` artifacts for Linux and Windows
 - `linux/`:
   - `package-tar.sh`: build `tar.gz` package from release binary
   - `package-deb.sh`: build `.deb` package via `cargo-deb`
-  - `watch-docker-compose.sh`: runtime launcher for packaged Linux installs
-  - `mdwatch.service`: systemd unit for packaged Linux installs
-  - `mdwatch.env`: default `/etc/default/mdwatch` template
+  - `watch-markcompose.sh`: runtime launcher for packaged Linux installs
+  - `markwatch.service`: systemd unit for packaged Linux installs
+  - `markwatch.env`: default `/etc/default/markwatch` template
 - `windows/`:
-  - `watch-docker-compose.ps1`: runtime launcher for Windows usage
+  - `watch-markcompose.ps1`: runtime launcher for Windows usage
   - `package-zip.ps1`: build ZIP package for release artifacts

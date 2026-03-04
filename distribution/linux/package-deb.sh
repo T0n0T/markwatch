@@ -32,7 +32,7 @@ cd "${PROJECT_DIR}"
 
 cargo build --release --locked --target "${TARGET}"
 
-TARGET_BIN="target/${TARGET}/release/mdwatch"
+TARGET_BIN="target/${TARGET}/release/markwatch"
 [[ -x "${TARGET_BIN}" ]] || {
   echo "ERROR: built binary missing: ${TARGET_BIN}" >&2
   exit 1
@@ -40,9 +40,9 @@ TARGET_BIN="target/${TARGET}/release/mdwatch"
 
 # cargo-deb asset path is static. Sync selected target binary to target/release for packaging.
 mkdir -p target/release
-cp "${TARGET_BIN}" target/release/mdwatch
+cp "${TARGET_BIN}" target/release/markwatch
 
-OUTPUT_PATH="${OUT_DIR}/mdwatch_${VERSION}_${DEB_ARCH}.deb"
+OUTPUT_PATH="${OUT_DIR}/markwatch_${VERSION}_${DEB_ARCH}.deb"
 cargo deb \
   --target "${TARGET}" \
   --no-build \

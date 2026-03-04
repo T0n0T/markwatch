@@ -256,7 +256,7 @@ fn run(cfg: Config) -> Result<(), String> {
         cfg.log_level,
         LogLevel::Info,
         &format!(
-            "starting mdwatch root={} workdir={} shell={} cmd={:?} ext={:?} debounce_ms={} reconcile_sec={}",
+            "starting markwatch root={} workdir={} shell={} cmd={:?} ext={:?} debounce_ms={} reconcile_sec={}",
             cfg.root.display(),
             cfg.workdir.display(),
             cfg.shell.as_str(),
@@ -879,7 +879,7 @@ fn usage_text() -> String {
     let default_shell = default_shell().as_str();
     String::from(
         "Usage:
-  mdwatch --root <path> [--workdir <path>] [--cmd <string>] [--shell <type>] [--ext <csv>] [--debounce-ms <n>] [--reconcile-sec <n>] [--log-level <level>]
+  markwatch --root <path> [--workdir <path>] [--cmd <string>] [--shell <type>] [--ext <csv>] [--debounce-ms <n>] [--reconcile-sec <n>] [--log-level <level>]
 
 Required:
   --root <path>            Markdown root directory to watch recursively
@@ -894,7 +894,7 @@ Optional:
   --log-level <level>      error|warn|info|debug (default: info)
 
 Example:
-  mdwatch --root /data/blog/markdown --workdir /srv/hugo/docker-compose --cmd \"./build.sh .env.runtime\" --shell sh
+  markwatch --root /data/blog/markdown --workdir /srv/hugo/markcompose --cmd \"./build.sh .env.runtime\" --shell sh
 ",
     )
     .replace("--cmd <string>           Build command run through the selected shell", &format!("--cmd <string>           Build command run through the selected shell (default: \"{}\")", default_cmd))

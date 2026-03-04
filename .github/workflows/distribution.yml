@@ -70,7 +70,7 @@ jobs:
       - name: Upload linux artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: mdwatch-linux-${{ matrix.arch }}
+          name: markwatch-linux-${{ matrix.arch }}
           path: dist/*
           if-no-files-found: error
 
@@ -114,7 +114,7 @@ jobs:
       - name: Upload windows artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: mdwatch-windows-${{ matrix.arch }}
+          name: markwatch-windows-${{ matrix.arch }}
           path: dist/*
           if-no-files-found: error
 
