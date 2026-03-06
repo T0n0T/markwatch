@@ -15,7 +15,7 @@ env:
 jobs:
   linux:
     name: linux-${{ matrix.arch }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
